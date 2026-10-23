@@ -1,0 +1,45 @@
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int R = sc.nextInt();
+        int C = sc.nextInt();
+        int[][] grid = new int[R][C];
+        Queue<int[]> q = new LinkedList<>();
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
+                grid[i][j] = sc.nextInt();
+                if (grid[i][j] == 2) {
+                    q.offer(new int[]{i, j});
+                }
+            }
+        }
+        int minutes = 0;
+        int[] dr = {-1, 1, 0, 0};
+        int[] dc = {0, 0, -1, 1};
+        while (!q.isEmpty()) {
+            int size = q.size();
+            boolean spread = false;
+            for (int i = 0; i < size; i++) {
+                int[] cell = q.poll();
+                for (int d = 0; d < 4; d++) {
+                    int nr = cell[0] + dr[d];
+                    int nc = cell[1] + dc[d];
+                    if (nr >= 0 && nr < R &&
+                        nc >= 0 && nc < C &&
+                        grid[nr][nc] == 1) {
+                        grid[nr][nc] = 2;
+                        q.offer(new int[]{nr, nc});
+                        spread = true;
+                    }
+                }
+            }
+
+            if (spread) {
+                minutes++;
+            }
+        }
+        System.out.println("Minutes = " + minutes);
+        sc.close();
+    }
+}
