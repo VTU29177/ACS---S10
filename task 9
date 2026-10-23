@@ -1,0 +1,65 @@
+import java.util.*;
+public class Main {
+    static class Node {
+        int value;
+        int listIndex;
+        int elementIndex;
+        Node(int value, int listIndex, int elementIndex) {
+            this.value = value;
+            this.listIndex = listIndex;
+            this.elementIndex = elementIndex;
+        }
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int m = sc.nextInt();
+        int k = sc.nextInt();
+        int[][] lists = new int[m][];
+        for (int i = 0; i < m; i++) {
+            int size = sc.nextInt();
+            lists[i] = new int[size];
+            for (int j = 0; j < size; j++) {
+                lists[i][j] = sc.nextInt();
+            }
+        }
+        PriorityQueue<Node> pq = new PriorityQueue<>(
+            (a, b) -> Integer.compare(a.value, b.value));
+        for (int i = 0; i < m; i++) {
+            if (lists[i].length > 0) {
+                pq.offer(new Node(lists[i][0], i, 0));
+            }
+        }
+        List<Integer> merged = new ArrayList<>();
+        while (!pq.isEmpty()) {
+            Node current = pq.poll();
+            merged.add(current.value);
+            int nextIndex = current.elementIndex + 1;
+            int listIndex = current.listIndex;
+            if (nextIndex < lists[listIndex].length) {
+                pq.offer(new Node(
+                    lists[listIndex][nextIndex],
+                    listIndex,
+                    nextInt));
+            }
+        }
+        System.out.println("Merged:");
+        for (int i = 0; i < merged.size(); i++) {
+            System.out.print(merged.get(i));
+            if (i < merged.size() - 1) {
+                System.out.print(" ");
+            }
+        }
+        System.out.println();
+        System.out.println();
+        System.out.println("TopK:");
+        for (int i = merged.size() - 1;
+             i >= merged.size() - k; i--) {
+            System.out.print(merged.get(i));
+            if (i > merged.size() - k) {
+                System.out.print(" ");
+            }
+        }
+        System.out.println();
+        sc.close();
+    }
+}
